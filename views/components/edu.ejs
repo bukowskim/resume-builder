@@ -3,6 +3,10 @@
     <span class="edu-duration"><%= data.duration %></span>
 </div>
 <div class="edu-class-data">
-    <span class="edu-std"><%= data.std %></span>
-    <span class="edu-score"><%= data.score %></span>
+    <% data.lines.forEach((line) => { %>
+
+            <span class="edu-std"><%= line %></span><br />
+  
+    <% }); %>
+    
 </div>

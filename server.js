@@ -3,7 +3,7 @@ var express = require('express');
 var fs = require('fs');
 var app = express();
 
-const dataPath = 'data';
+const dataPath = 'curriculum-vitae-data';
 const port = process.env.PORT || 8080;
 
 app.set('view engine', 'ejs');

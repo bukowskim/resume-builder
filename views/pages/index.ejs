@@ -5,14 +5,14 @@
     <link rel="stylesheet" type="text/css" href="/css/index.css">
     <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:200,400,600" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Roboto+Condensed" rel="stylesheet">
-    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css">
 </head>
 <body>
     <div class="container">
         <div class="header">
             <div class="logo" style="background-image: url('<%= imageUrl %>')"></div>
             <div class="header-title-section">
-                <div class="header-title"><%= name %></div>
+                <div class="header-title"><%= firstName %> <span class="header-title-lastname"><%= lastName %></span></div>
                 <div class="header-subtitle"><%= subTitle %></div>
             </div>
         </div>
@@ -23,7 +23,7 @@
                     <div class="cat-def-body"><%= about.intro %></div>
                 <% } %>
                 <%- include('../components/cat_header', { catName: "Contact" }); %>
-                <div class="cat-contact-body">
+                <div class="cat-contact-body" style="margin-bottom:5px">
                     <div class="contact-item">
                         <div class="contact-logo">
                             <i class="fa fa-envelope" aria-hidden="true"></i>
@@ -37,17 +37,9 @@
                     <% if (about.contact.phone) { %>
                     <div class="contact-item">
                         <div class="contact-logo">
-                            <i class="fa fa-phone" aria-hidden="true"></i>
+                            <i class="fa-solid fa-mobile-screen" aria-hidden="true"></i>
                         </div>
                         <div class="contact-info"><%= about.contact.phone %></div>
-                    </div>
-                    <% } %>
-                    <% if (about.contact.address) { %>
-                    <div class="contact-item">
-                        <div class="contact-logo">
-                            <i class="fa fa-address-card" aria-hidden="true"></i>
-                        </div>
-                        <div class="contact-info"><%= about.contact.address %></div>
                     </div>
                     <% } %>
                 </div>
@@ -59,16 +51,34 @@
                         <% }); %>
                     </ul>
                 </div>
+                <%- include('../components/cat_header', { catName: "Languages" }); %>
+                <div class="cat-list-body">
+                    <ul class="fa-ul" style="list-style: none;">
+                        <% languages.forEach((language) => { %>
+                        <li><span class="fa-li"><i class="fa-solid fa-bullhorn" style="font-size: 15px; color:#2e74b5;margin-top: 5px;"></i></span>
+                            <%- include('../components/language', { name: language.name, desc: language.desc }); %>
+                        </li>
+                        <% }); %>
+                    </ul>
+                </div>
+                <%- include('../components/cat_header', { catName: "Interests" }); %>
+                <div class="cat-list-body">
+                    <ul>
+                        <% interests.forEach((interest) => { %>
+                        <li><%= interest %></li>
+                        <% }); %>
+                    </ul>
+                </div>
             </div>
             <div class="info-col info-right">
                 <%- include('../components/cat_header', { catName: "Work Experience" }); %>
                 <div class="cat-list-body">
-                    <ul>
+                    <ul class="fa-ul" style="list-style: none;">
                     <% workExp.forEach((work) => { %>
-                        <li>
+                        <li><span class="fa-li"><i class="fa-solid fa-briefcase" style="font-size: 25px;"></i></span>
                         <%-
                             include('../components/work', {
-                                data: { title: work.title, duration: work.duration, desc: work.desc }
+                                data: { company: work.company, role: work.role, duration: work.duration, desc: work.desc, lines: work.lines, tags: work.tags }
                             });
                         %>
                         </li>
@@ -79,67 +89,44 @@
         </div>
         <%- include('../components/cat_header', { catName: "Education" }); %>
         <div class="cat-list-body">
-            <ul>
+            <ul class="fa-ul" style="list-style: none;">
                 <% education.forEach((edu) => { %>
-                <li>
+                <li><span class="fa-li"><i class="fa-solid fa-graduation-cap" style="font-size: 25px;"></i></span>
                     <%-
                     include('../components/edu', { data:
-                        { alma: edu.alma, duration: edu.duration, std: edu.std, score: edu.score }
+                        { alma: edu.alma, duration: edu.duration, lines: edu.lines }
                     });
                     %>
                 </li>
                 <% }); %>
             </ul>
         </div>
-        <%- include('../components/cat_header', { catName: "Skills" }); %>
+        <%- include('../components/cat_header', { catName: "Chosen Skills" }); %>
         <% skills.forEach((skill) => { %>
-            <%
-                let type_klass = "cat-skill-type";
-                let body_klass = "cat-skill-body";
-
-                if (skill.graph == "false") { type_klass += " force-inline"; body_klass += "-gen"; }
-            %>
-            <div class="cat-skill-item"><div class="<%= type_klass %>"><%= skill.category %></div>
-            <div class="<%= body_klass %>">
-            <% if (skill.graph == "true") { %>
-                <% skill.topics.forEach((topic) => { %>
-                    <%- include('../components/skill', { skill: topic.name, perc: topic.perc }); %>
-                <% }); %>
-            <% } else { %>
-                <% skill.topics.forEach((topic) => { %>
-                    <div class="skill-gen"><%= topic %></div>
-                <% }); %>
-            <% } %>
-            </div></div>
+            <div class="cat-skill-item">
+                <div class="cat-skill-type"><%= skill.category %></div>
+                <div class="cat-skill-body">
+                    <% skill.topics.forEach((topic) => { %>
+                        <div class="skill-gen"><%= topic %></div>
+                    <% }); %>
+                </div>
+            </div>
         <% }); %>
-        <%- include('../components/cat_header', { catName: "Projects" }); %>
-        <div class="cat-list-body">
-            <ul>
-            <% projects.forEach((proj) => { %>
-                <li>
-                <%-
-                    include('../components/project', { data:
-                        { title: proj.title, duration: proj.duration, link: proj.link, desc: proj.desc }
-                    });
-                %>
-                </li>
-            <% }); %>
-            </ul>
+        <div class="footer" style="margin-top:5px;">
+            <%- include('../components/cat_header', { catName: "Courses" }); %>
+            <div class="cat-list-body">
+                <ul style="columns: 2;">
+                    <% courses.forEach((course) => { %>
+                    <li>
+                        <%- include('../components/ach_item', { desc: course.desc, date: course.date}); %>
+                    </li>
+                    <% }); %>
+                </ul>
+            </div>
         </div>
-        <div class="footer">
-            <% if (events) { %>
-                <% events.forEach((event) => { %>
-                    <%- include('../components/cat_header', { catName: event.title }); %>
-                    <div class="cat-list-body">
-                        <ul>
-                            <% event.body.forEach((data) => { %>
-                            <li><%- include('../components/ach_item', { desc: data.desc, date: data.date }); %></li>
-                            <% }); %>
-                        </ul>
-                    </div>
-                <% }); %>
-            <% } %>
-        </div>
+        <div class="information-clause">
+            <div>I agree that my personal data will be processed by <b><%= companyName %></b> in order to recruit for the position I am applying for.</div>
+        <div> 
     </div>
     <script type="text/javascript">
         window.addEventListener("load", () => {
@@ -147,12 +134,6 @@
             for (let i = 0; i < desc.length; i++) {
                 desc[i].innerHTML = desc[i].innerText;
             };
-
-            // Extra padding for last skill item
-            let skillItems = document.querySelectorAll(".cat-skill-item");
-            if (skillItems) {
-                skillItems[skillItems.length-1].classList.add("pad-bottom-extra");
-            }
 
             <%
                 Object.keys(theme).forEach(function(key) {
