@@ -135,6 +135,11 @@
                 desc[i].innerHTML = desc[i].innerText;
             };
 
+            let skillItems = document.querySelectorAll(".cat-skill-item");
+            if (skillItems) {
+                skillItems[0].classList.add("margin-top-extra");
+            }
+
             <%
                 Object.keys(theme).forEach(function(key) {
                     if (theme.hasOwnProperty(key)) {
